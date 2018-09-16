@@ -3,7 +3,7 @@ package dat
 import (
 	"bytes"
 	"encoding/json"
-	f "github.com/aurumbot/foundation"
+	f "github.com/aurumbot/dat/foundation"
 	dsg "github.com/bwmarrin/discordgo"
 	"io"
 	"io/ioutil"
