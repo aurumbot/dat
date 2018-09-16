@@ -23,27 +23,13 @@ var (
 var path string
 
 func init() {
-	ps = OSCheck()
-	//path = "." + ps
-	path = "/home/whitman-colm/bots/bastard/"
-
 	currentTime = time.Now().Format("2006-01-02@15h04m")
 
-	file, err := os.Create(path + "log" + ps + "botlogs@" + currentTime + ".log")
+	file, err := os.Create("./dat/logs/botlogs@" + currentTime + ".log")
 	if err != nil {
 		panic(err)
 	}
 	Log = log.New(file, "", log.Ldate|log.Ltime|log.Llongfile|log.LUTC)
-}
-
-// To make this system universal, the bot needs to know
-// wether it has to use a stupid backslash
-func OSCheck() string {
-	if runtime.GOOS == "windows" {
-		return "\\"
-	} else {
-		return "/"
-	}
 }
 
 var lock sync.Mutex
