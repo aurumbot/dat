@@ -35,8 +35,6 @@ type BotType struct {
 		ReportPermFails  bool     `json:"reportPermissionFailures"`
 		BlacklistedRoles []string `json:"blacklistedRoles"`
 		AdminRoles       []string `json:"adminRoles"`
-		StaffRoles       []string `json:"staffRoles"`
-		StandardRoles    []string `json:"standardUser"`
 	} `json:"users"`
 }
 
@@ -55,7 +53,7 @@ type BotType struct {
 *
 * NOTE: THIS DOES NOT RETURN ERRORS. YOU MUST HANDLE ERRORS.
  */
-type Action func(session *dsg.Session, message *dsg.MessageCreate)
+type Action func(session *dsg.Session, message *dsg.Message)
 
 /* Defines static data about commands the bot runs.
 * This is a very large structure that defines all the needed bits for a bot
