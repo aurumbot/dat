@@ -77,7 +77,7 @@ func GetBotInfo() (f.BotType, error) {
 
 	var b f.BotType
 	defer file.Close()
-	err = json.NewDecoder(file).Decode(b)
+	err = json.NewDecoder(file).Decode(&b)
 	if err != nil {
 		return b, err
 	}
