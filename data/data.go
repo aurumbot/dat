@@ -16,13 +16,13 @@ import (
 var (
 	currentTime string
 	Log         *log.Logger
-	path        = "./"
+	path        = "./dat/"
 )
 
 func init() {
 	currentTime = time.Now().Format("2006-01-02@15h04m")
 
-	file, err := os.Create("./dat/logs/botlogs@" + currentTime + ".log")
+	file, err := os.Create(path + "logs/botlogs@" + currentTime + ".log")
 	if err != nil {
 		panic(err)
 	}
@@ -68,7 +68,7 @@ func Load(fileName string, v interface{}) error {
 
 // TODO: delete, rewrite main to pull from a Load() call.
 func GetBotInfo() (f.BotType, error) {
-	raw, err := ioutil.ReadFile(path + "dat/preferences.json")
+	raw, err := ioutil.ReadFile(path + "preferences.json")
 	var b f.BotType
 
 	if err != nil {
