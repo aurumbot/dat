@@ -68,6 +68,8 @@ func Load(fileName string, v interface{}) error {
 
 // TODO: delete, rewrite main to pull from a Load() call.
 func GetBotInfo() (f.BotType, error) {
+	lock.Lock()
+	defer lock.Unlock()
 	file, err := os.Open(path + "preferences.json")
 	if err != nil {
 		var b f.BotType
@@ -75,7 +77,7 @@ func GetBotInfo() (f.BotType, error) {
 	}
 
 	var b f.BotType
-	err = json.NewDecoder(file).Unmarshal(b)
+	err = json.NewDecoder(file).Decode(b)
 	if err != nil {
 		return b, err
 	}
