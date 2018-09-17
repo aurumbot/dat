@@ -1,4 +1,4 @@
-module github.com/aurumbot/dat v2.0.1
+module github.com/aurumbot/dat v1.0.0
 
 require (
 	github.com/bwmarrin/discordgo v0.18.0
