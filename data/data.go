@@ -68,7 +68,7 @@ func Load(fileName string, v interface{}) error {
 
 // TODO: delete, rewrite main to pull from a Load() call.
 func GetBotInfo() (f.BotType, error) {
-	raw, err := ioutil.ReadFile("./dat/preferences.json")
+	raw, err := ioutil.ReadFile("dat/preferences.json")
 	var b f.BotType
 
 	if err != nil {
