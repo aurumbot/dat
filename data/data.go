@@ -68,15 +68,14 @@ func Load(fileName string, v interface{}) error {
 
 // TODO: delete, rewrite main to pull from a Load() call.
 func GetBotInfo() (f.BotType, error) {
-	raw, err := ioutil.ReadFile("dat/preferences.json")
-	var b f.BotType
-
+	file, err := os.Open(path + "preferences.json")
 	if err != nil {
+		var b f.BotType
 		return b, err
 	}
 
-	err = json.Unmarshal(raw, &b)
-
+	var b f.BotType
+	err = json.NewDecoder(file).Unmarshal(b)
 	if err != nil {
 		return b, err
 	}
