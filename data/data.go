@@ -67,6 +67,7 @@ func Load(fileName string, v interface{}) error {
 
 // TODO: delete, rewrite main to pull from a Load() call.
 func GetBotInfo() (f.BotType, error) {
+	print("test")
 	lock.Lock()
 	defer lock.Unlock()
 	file, err := os.Open("/Users/whitman-colm/desktop/core/dat/preferences.json")
