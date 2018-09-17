@@ -6,7 +6,6 @@ import (
 	f "github.com/aurumbot/dat/foundation"
 	dsg "github.com/bwmarrin/discordgo"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"sync"
