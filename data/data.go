@@ -37,7 +37,7 @@ func Save(fileName string, v interface{}) error {
 	lock.Lock()
 	defer lock.Unlock()
 
-	file, err := os.Create(path + "cmds" + ps + fileName)
+	file, err := os.Create(path + "cmds/" + fileName)
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func Save(fileName string, v interface{}) error {
 func Load(fileName string, v interface{}) error {
 	lock.Lock()
 	defer lock.Unlock()
-	file, err := os.Open(path + "cfg" + ps + fileName)
+	file, err := os.Open(path + "cfg/" + fileName)
 	if err != nil {
 		return err
 	}
@@ -70,7 +70,7 @@ func Load(fileName string, v interface{}) error {
 
 // TODO: delete, rewrite main to pull from a Load() call.
 func GetBotInfo() (f.BotType, error) {
-	raw, err := ioutil.ReadFile(path + "config" + ps + "preferences.json")
+	raw, err := ioutil.ReadFile(path + "config/preferences.json")
 	var b f.BotType
 
 	if err != nil {
