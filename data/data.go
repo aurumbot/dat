@@ -15,11 +15,9 @@ import (
 
 var (
 	currentTime string
-	ps          string
 	Log         *log.Logger
+	path        = "./"
 )
-
-var path string
 
 func init() {
 	currentTime = time.Now().Format("2006-01-02@15h04m")
@@ -58,7 +56,7 @@ func Save(fileName string, v interface{}) error {
 func Load(fileName string, v interface{}) error {
 	lock.Lock()
 	defer lock.Unlock()
-	file, err := os.Open(path + "cfg/" + fileName)
+	file, err := os.Open(path + "cmds/" + fileName)
 	if err != nil {
 		return err
 	}
@@ -70,7 +68,7 @@ func Load(fileName string, v interface{}) error {
 
 // TODO: delete, rewrite main to pull from a Load() call.
 func GetBotInfo() (f.BotType, error) {
-	raw, err := ioutil.ReadFile(path + "config/preferences.json")
+	raw, err := ioutil.ReadFile(path + "dat/preferences.json")
 	var b f.BotType
 
 	if err != nil {
