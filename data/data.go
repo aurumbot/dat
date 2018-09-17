@@ -69,13 +69,14 @@ func Load(fileName string, v interface{}) error {
 func GetBotInfo() (f.BotType, error) {
 	lock.Lock()
 	defer lock.Unlock()
-	file, err := os.Open(path + "preferences.json")
+	file, err := os.Open("/Users/whitman-colm/desktop/core/dat/preferences.json")
 	if err != nil {
 		var b f.BotType
 		return b, err
 	}
 
 	var b f.BotType
+	defer file.Close()
 	err = json.NewDecoder(file).Decode(b)
 	if err != nil {
 		return b, err
