@@ -5,7 +5,7 @@ import (
 )
 
 /* # Big Bot Boye
-* This struct is all about who the bot is: its prefrences, authentication, etc.
+* This struct defines the authentication info and config details for the bot
 *
 * The fields are self explanitory so I'm not going to detail them.
 *
@@ -19,12 +19,9 @@ type BotType struct {
 		Secret   string `json:"secret"`
 		Token    string `json:"token"`
 		Port     string `json:"port"`
+		Name     string `json:"name"`
+		Prefix   string `json:"prefix"`
 	} `json:"auth"`
-	Prefs struct {
-		Prefix  string `json:"prefix"`
-		Playing string `json:"playing"`
-		Version string `json:"version"`
-	} `json:"prefs"`
 	Perms struct {
 		WhitelistChannels   bool     `json:"whitelistChannels"`
 		WhitelistedChannels []string `json:"whitelistedChannels"`
