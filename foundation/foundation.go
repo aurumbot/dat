@@ -65,6 +65,13 @@ type Command struct {
 	Action  Action `json:"-"`
 }
 
+/* A command's public init statment
+* This function is a way for commands to get the session and execute tasks
+* autonomously (i.e. setup handlers). This will be parsed when the core's
+* reloadPlugins() is called.
+ */
+type Init func(session *dsg.Session)
+
 /* # Get the guild a message was sent in.
 * What a pain in the arse.
 *
