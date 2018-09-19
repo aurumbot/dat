@@ -14,23 +14,13 @@ import (
 *
  */
 type BotType struct {
-	Auth struct {
-		ClientID string `json:"clientID"`
-		Secret   string `json:"secret"`
-		Token    string `json:"token"`
-		Prefix   string `json:"prefix"`
-	} `json:"auth"`
-	Perms struct {
-		WhitelistChannels   bool     `json:"whitelistChannels"`
-		WhitelistedChannels []string `json:"whitelistedChannels"`
-		BlacklistedChannels []string `json:"blacklistedChannels"`
-	} `json:"perms"`
-	Users struct {
-		RoleWhitelist    bool     `json:"roleWhitelist"`
-		ReportPermFails  bool     `json:"reportPermissionFailures"`
-		BlacklistedRoles []string `json:"blacklistedRoles"`
-		AdminRoles       []string `json:"adminRoles"`
-	} `json:"users"`
+	ClientID            string   `json:"clientID"`
+	Secret              string   `json:"secret"`
+	Token               string   `json:"token"`
+	Prefix              string   `json:"prefix"`
+	BlacklistedChannels []string `json:"channels"`
+	BlacklistedRoles    []string `json:"roles"`
+	AdminRoles          []string `json:"admins"`
 }
 
 /* Defines the actual action the bot takes
@@ -106,13 +96,29 @@ func GetGuild(s *dsg.Session, m *dsg.Message) (st *dsg.Guild, err error) {
 * Permissions are integer constants defined by discordgo:
 * https://godoc.org/github.com/bwmarrin/discordgo#pkg-constants
 * Note that the check is non-hierarchichal.
+*
+* Parameters:
+* - s (*discordgo.Session)
+* - m (*discordgo.Message)
+* - userID (string) : The user to be checked, leave blank for the message
+*			author.
+* - perm (int) : see above paragraph
+*
+* Returns:
+* - bool  : if the perm is met
+* - error : if an error was encountered, must be logged.
  */
 func HasPermissions(s *dsg.Session, m *dsg.Message, userID string, perm int) (bool, error) {
 	guild, err := GetGuild(s, m)
 	if err != nil {
 		return false, err
 	}
-	member, err := s.GuildMember(guild.ID, m.Author.ID)
+	var member *dsg.Member
+	if userID == "" {
+		member, err = s.GuildMember(guild.ID, m.Author.ID)
+	} else {
+		member, err = s.GuildMember(guild.ID, userID)
+	}
 	if err != nil {
 		return false, err
 	}
