@@ -18,8 +18,6 @@ type BotType struct {
 		ClientID string `json:"clientID"`
 		Secret   string `json:"secret"`
 		Token    string `json:"token"`
-		Port     string `json:"port"`
-		Name     string `json:"name"`
 		Prefix   string `json:"prefix"`
 	} `json:"auth"`
 	Perms struct {

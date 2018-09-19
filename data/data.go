@@ -28,61 +28,104 @@ func init() {
 	Log = log.New(file, "", log.Ldate|log.Ltime|log.Llongfile|log.LUTC)
 }
 
+// Simple check to make sure a... something... exists.
+func exists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return true, err
+}
+
 var lock sync.Mutex
 
+/* Saves a file to json
+* This is a simple helper function to manage data persistance and keep it in
+* one place.
+*
+* Parameters
+* - fileName (string) : where the data is to be stored. Note that this should
+*			be in the form of $MODULENAME/*.json so modules that
+*			use the same name config.json don't interfere.
+* - v (interface{})   : the thing you're saving.
+*
+* Returns:
+* - error : error has already been logged, but useful for AlertDiscord()
+ */
 func Save(fileName string, v interface{}) error {
 	lock.Lock()
 	defer lock.Unlock()
-
-	file, err := os.Create(path + "cmds/" + fileName)
+	// Checks for directories in fileName, creates them if they aren't real.
+	dir := ""
+	split := strings.Split(fileName, "/")
+	for i, v := range split {
+		dir += v
+		if len(split)-1 != i {
+			dir += "/"
+		} else {
+			break
+		}
+		// makes sure its real
+		validPath, err := exists(v)
+		if err != nil {
+			Log.Println(err)
+			return err
+		}
+		if validPath {
+			continue
+		}
+		// creates
+		if err := os.Mkdir(dir, 0600); err != nil {
+			Log.Println(err)
+			return err
+		}
+	}
+	// Opens file, creates if not real
+	file, err := os.OpenFile(path+"cfg/"+fileName, os.O_CREATE|os.O_WRONGLY|os.O_TRUNC, 0600)
 	if err != nil {
+		Log.Println(err)
 		return err
 	}
 	defer file.Close()
 
 	b, err := json.MarshalIndent(v, "", "\t")
 	if err != nil {
+		Log.Println(err)
 		return err
 	}
-
 	reader := bytes.NewReader(b)
-
 	_, err = io.Copy(file, reader)
-
 	return err
 }
 
+/* Loads a file from json
+* This is a simple helper function to manage data persistance and keep it in
+* one place.
+*
+* Parameters
+* - fileName (string) : where the data is stored. Note that this should
+*			be in the form of $MODULENAME/*.json so modules that
+*			use the same name config.json don't interfere.
+* - v (interface{})   : the thing you're loading. as a pointer
+*
+* Returns:
+* - error : error has already been logged, but useful for AlertDiscord()
+ */
 func Load(fileName string, v interface{}) error {
 	lock.Lock()
 	defer lock.Unlock()
-	file, err := os.Open(path + "cmds/" + fileName)
+	file, err := os.Open(path + "cfg/" + fileName)
 	if err != nil {
+		Log.Println(err)
 		return err
 	}
 	defer file.Close()
 
 	err = json.NewDecoder(file).Decode(v)
 	return err
-}
-
-// TODO: delete, rewrite main to pull from a Load() call.
-func GetBotInfo() (f.BotType, error) {
-	lock.Lock()
-	defer lock.Unlock()
-	file, err := os.Open(path + "preferences.json")
-	if err != nil {
-		var b f.BotType
-		return b, err
-	}
-
-	var b f.BotType
-	defer file.Close()
-	err = json.NewDecoder(file).Decode(&b)
-	if err != nil {
-		return b, err
-	}
-
-	return b, nil
 }
 
 /* # Alerts discord of errors.
