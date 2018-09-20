@@ -7,9 +7,9 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 	"sync"
 	"time"
-	"strings"
 )
 
 var (
@@ -117,7 +117,7 @@ func Save(fileName string, v interface{}) error {
 func Load(fileName string, v interface{}) error {
 	lock.Lock()
 	defer lock.Unlock()
-	file, err := os.OpenFile(path + "cfg/" + fileName, O_RDONLY, 0600)
+	file, err := os.OpenFile(path+"cfg/"+fileName, os.O_RDONLY, 0600)
 	if err != nil {
 		Log.Println(err)
 		return err
