@@ -20,7 +20,7 @@ type BotType struct {
 	Prefix              string   `json:"prefix"`
 	BlacklistedChannels []string `json:"channels"`
 	BlacklistedRoles    []string `json:"roles"`
-	AdminRoles          []string `json:"admins"`
+	Admins              []string `json:"admins"`
 }
 
 /* Defines the actual action the bot takes
@@ -129,7 +129,7 @@ func HasPermissions(s *dsg.Session, m *dsg.Message, userID string, perm int) (bo
 	if err != nil {
 		return false, err
 	}
-	for _, b := range MyBot.Users.AdminRoles {
+	for _, b := range MyBot.Admins {
 		if Contains(member.Roles, b) {
 			return true, nil
 		}
@@ -167,36 +167,6 @@ func RoleFromID(s *dsg.Session, m *dsg.Message, id string) (*dsg.Role, error) {
 	}
 	return &dsg.Role{}, nil
 }
-
-/* # Manage User Responces Via Reactions
-* This function is the manager for interacting with users via discord
-* reations. Useful for scrolling through manuals, voting, and other
-* services with a short enumeration of responses.
-*
-* Parameters:
-* - UserID (string) | ID of user whose reaction you're gauging. Leave blank for
-*	all users
-* - MessageID (string) | ID of the message to add the reactions to. Leave blank
-*	for last message sent by bot
-* - Emojis ([]dsg.Emoji) | Emojis to add to the selected message IN ORDER.
-*	 contains some pre-defined global emotes:
-*		- :octagonal_sign:
-*		- :rewind:
-*		- :arrow_backward:
-*		- :arrow_forward:
-*		- :fast_forward:
-*		- :zero:
-*		- :one:
-*		- :two:
-*		- :three:
-*		- :four:
-*		- :five:
-*		- :six:
-*		- :seven:
-*		- :eight:
-*		- :nine:
- */
-//func ReactionResponce(UserID string, MessageID string, Emojis [dsg.Emoji])
 
 /* # Check if item is in array
 * This function checks if a value is in a slice (string only)
