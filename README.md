@@ -1,15 +1,32 @@
-# Data directory.
+# Bot Backend Tools
 
-This is one of the key elements to a working bot. As the bot has to
-handle a fair bit of data, we went all in and made a universal data
-directory. All information the bot will use should be put in here.
-The bot will also generate some of its own data from commands and so
-on, this will also go in here. However the files that an average
-person who just wants a plug-n-play robot should be concerned about
-are as follows. Please be aware that the names **must** be kept
-unless you have gone through and changed the hard-coded name values
-for some reason.
+lib contains 2 modules, foundation and dat, that provides an array of
+useful functions and standards for aurum.
 
-- preferences.json : Contains all the hard coded static data about the
-                     bot such as authentication and universal
-                     moderation configuration.
+## Foundation
+
+Package foundation defines core bot information:
+- The `Command` struct, its fields, and the `Action()` function which
+  the bot uses to process commands.
+- The `Bot` type, which provides fundamental configuration info such
+  as authentication info and channels the bot should not respond on.
+- A couple functions to dry up code
+  - `GetGuild()` to get the server a message was sent in (as a 
+    `discordgo.Guild` object)
+  - `HasPermissions()` to check user's permissions against 
+    [discord's built-in system](https://discordapp.com/developers/docs/topics/permissions)
+  - `RoleFromID()` to get a `discordgo.Role` given its id as a string
+- An exported version of `Bot` for plugins to call on
+- An exported version of the `discordgo.Session` for plugins to call
+  on
+
+## dat
+
+Package dat standardizes file I/O
+- a `Log` of `log.Logger` which handles... logging errors.
+- a `Save()` to write an `interface{}` to a file
+- a `Load()` to retrieve an `interface{}` from a file.
+- an `AlertDiscord()` which reads out an error to a given discord
+  channel.
+
+# EOF
