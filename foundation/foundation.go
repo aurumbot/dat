@@ -13,7 +13,7 @@ import (
 *       passed in as parameters because the rest isn't nearly as important.
 *
  */
-type BotType struct {
+type Bot struct {
 	ClientID            string   `json:"clientID"`
 	Secret              string   `json:"secret"`
 	Token               string   `json:"token"`
@@ -64,13 +64,6 @@ type Command struct {
 	Version string `json:"version"`
 	Action  Action `json:"-"`
 }
-
-/* A command's public init statment
-* This function is a way for commands to get the session and execute tasks
-* autonomously (i.e. setup handlers). This will be parsed when the core's
-* reloadPlugins() is called.
- */
-type Init func(session *dsg.Session)
 
 /* # Get the guild a message was sent in.
 * What a pain in the arse.
@@ -129,7 +122,7 @@ func HasPermissions(s *dsg.Session, m *dsg.Message, userID string, perm int) (bo
 	if err != nil {
 		return false, err
 	}
-	for _, b := range MyBot.Admins {
+	for _, b := range Config.Admins {
 		if Contains(member.Roles, b) {
 			return true, nil
 		}
@@ -191,9 +184,9 @@ func Contains(list []string, item string) bool {
 	return false
 }
 
-// An initialized instance of the BotType for use everywhere in this project.
-var MyBot BotType
+// An initialized instance of the Bot for use everywhere in this project.
+var Config Bot
 
 // A discordgo session global variable as .Session is needed for a lot.
 // This is written to in the main.go file.
-var DG *dsg.Session
+var Session *dsg.Session
