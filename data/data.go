@@ -3,13 +3,13 @@ package dat
 import (
 	"bytes"
 	"encoding/json"
-	f "github.com/aurumbot/dat/foundation"
 	dsg "github.com/bwmarrin/discordgo"
 	"io"
 	"log"
 	"os"
 	"sync"
 	"time"
+	"strings"
 )
 
 var (
@@ -84,7 +84,7 @@ func Save(fileName string, v interface{}) error {
 		}
 	}
 	// Opens file, creates if not real
-	file, err := os.OpenFile(path+"cfg/"+fileName, os.O_CREATE|os.O_WRONGLY|os.O_TRUNC, 0600)
+	file, err := os.OpenFile(path+"cfg/"+fileName, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0600)
 	if err != nil {
 		Log.Println(err)
 		return err
@@ -117,7 +117,7 @@ func Save(fileName string, v interface{}) error {
 func Load(fileName string, v interface{}) error {
 	lock.Lock()
 	defer lock.Unlock()
-	file, err := os.Open(path + "cfg/" + fileName)
+	file, err := os.OpenFile(path + "cfg/" + fileName, O_RDONLY, 0600)
 	if err != nil {
 		Log.Println(err)
 		return err
