@@ -28,6 +28,11 @@ func init() {
 	Log = log.New(file, "", log.Ldate|log.Ltime|log.Llongfile|log.LUTC)
 }
 
+// Sets the absolute path
+func SetPath(p string) {
+	path = p + "/dat/"
+}
+
 // Simple check to make sure a... something... exists.
 func exists(path string) (bool, error) {
 	_, err := os.Stat(path)
