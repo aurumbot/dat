@@ -60,7 +60,7 @@ var lock sync.Mutex
 * Returns:
 * - error : error has already been logged, but useful for AlertDiscord()
  */
-func Save(fileName string, v interface{}) error {
+func Save(fileName string, item interface{}) error {
 	lock.Lock()
 	defer lock.Unlock()
 	// Checks for directories in fileName, creates them if they aren't real.
@@ -74,7 +74,7 @@ func Save(fileName string, v interface{}) error {
 			break
 		}
 		// makes sure its real
-		validPath, err := exists(v)
+		validPath, err := exists(dir)
 		if err != nil {
 			Log.Println(err)
 			return err
@@ -96,7 +96,7 @@ func Save(fileName string, v interface{}) error {
 	}
 	defer file.Close()
 
-	b, err := json.MarshalIndent(v, "", "\t")
+	b, err := json.MarshalIndent(item, "", "\t")
 	if err != nil {
 		Log.Println(err)
 		return err
