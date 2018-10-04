@@ -64,7 +64,7 @@ func Save(fileName string, item interface{}) error {
 	lock.Lock()
 	defer lock.Unlock()
 	// Checks for directories in fileName, creates them if they aren't real.
-	dir := ""
+	dir := "cfg/"
 	split := strings.Split(fileName, "/")
 	for i, v := range split {
 		dir += v
@@ -83,7 +83,7 @@ func Save(fileName string, item interface{}) error {
 			continue
 		}
 		// creates
-		if err := os.Mkdir(dir, 0600); err != nil {
+		if err := os.Mkdir(dir, 0775); err != nil {
 			Log.Println(err)
 			return err
 		}
