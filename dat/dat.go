@@ -64,7 +64,7 @@ func Save(fileName string, item interface{}) error {
 	lock.Lock()
 	defer lock.Unlock()
 	// Checks for directories in fileName, creates them if they aren't real.
-	dir := "cfg/"
+	dir := path + "cfg/"
 	split := strings.Split(fileName, "/")
 	for i, v := range split {
 		dir += v
